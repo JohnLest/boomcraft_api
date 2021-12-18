@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
-from model.usersModel import UsersModel
-from bll.services.usersService import UsersService
+from model.userModel import UserModel
+from bll.services.userService import UserService
 from database.database import session
 
 route = APIRouter(
@@ -9,20 +9,15 @@ route = APIRouter(
     tags=["User Router"]
     )
 
-usersService = UsersService(session)
+user_service = UserService(session)
 
 
-@route.get("/helloWorld", response_model=List[UsersModel], status_code=200)
-async def hello_world():
-    return usersService.get_all_user()
+@route.get("/get_user", response_model=UserModel, status_code=200)
+async def get_user():
+    return None
 
 
-@route.get("/make_coffee", status_code=201)
-async def make_coffee():
-    raise HTTPException(status_code=418, detail="I'm a teapot")
-    return "Cup of coffee"
+@route.post("/post_user", response_model=UserModel, status_code=200)
+async def post_user():
+    return None
 
-
-@route.get("/byebye")
-async def byebye():
-    return {"message": "ByeBye"}
