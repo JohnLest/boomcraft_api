@@ -9,6 +9,10 @@ class UserService:
         result = self.repo.get_all()
         return result
 
+    def get_user_by_id(self, id):
+        result = self.repo.get_by_id(id)
+        return result
+
 
 
     

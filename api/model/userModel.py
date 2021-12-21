@@ -2,9 +2,9 @@ from pydantic import BaseModel
 
 
 class UserModel(BaseModel):
-    idUser: int
-    name: str
-    age: int
+    id_user: int
+    pseudo: str
+    mail: str
 
     class Config:
         orm_mode = True

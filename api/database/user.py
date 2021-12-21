@@ -6,7 +6,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "user"
 
-    id_user = Column(Integer, primary_key = True)
+    id_user = Column("idUser", Integer, primary_key = True)
     pseudo = Column(String)
-    age = Column(Integer)
+    mail = Column("mailAddress", String)
     password = Column(String)

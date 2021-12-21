@@ -12,9 +12,9 @@ route = APIRouter(
 user_service = UserService(session)
 
 
-@route.get("/get_user", response_model=UserModel, status_code=200)
-async def get_user():
-    return None
+@route.get("/get_user/{id_user}", response_model=UserModel, status_code=200)
+async def get_user(id_user: int):
+    return user_service.get_user_by_id(id_user)
 
 
 @route.post("/post_user", response_model=UserModel, status_code=200)
