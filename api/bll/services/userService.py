@@ -1,5 +1,7 @@
 from dal.repository.userRepo import UserRepo
 from database.user import User
+from model.userModel import PostUserModel
+from datetime import datetime
 
 class UserService:
     def __init__(self, session):
@@ -13,6 +15,10 @@ class UserService:
         result = self.repo.get_by_id(id)
         return result
 
+    def post_new_user(self, data: PostUserModel):
+        user = User(id_user = int(datetime.now().timestamp()), pseudo = data.pseudo, mail = data.mail, password = data.password)
+        result = self.repo.insert(user)
+        return result
 
 
     

@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from model.userModel import UserModel
 from bll.services.userService import UserService
 from database.database import session
@@ -15,6 +15,10 @@ helloService = UserService(session)
 async def hello_world():
     return helloService.get_all_user()
 
+@route.post("/post_test_json", status_code=200)
+async def post_json(user: UserModel):
+    print(user)
+    return user
 
 @route.get("/make_coffee", status_code=201)
 async def make_coffee():
