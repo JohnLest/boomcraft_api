@@ -20,5 +20,4 @@ class UserService:
         result = self.repo.insert(user)
         return result
 
-
     

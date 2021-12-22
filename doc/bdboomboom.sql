@@ -40,7 +40,7 @@ CREATE TABLE `FRIENDOF` (
 --
 
 CREATE TABLE `RESSOURCE` (
-  `idRess` int(11) NOT NULL,
+  `idRess` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `quantity` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
