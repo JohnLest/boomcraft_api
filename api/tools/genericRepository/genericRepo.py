@@ -30,7 +30,7 @@ class GenericRepo:
         Param: the filter \n
         Return list of rows
         """
-        return self.session.query(self.table).filter(filter)
+        return self.session.query(self.table).filter(filter).all()
     
     def get_first(self, filter):
         """

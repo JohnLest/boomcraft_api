@@ -4,9 +4,9 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class TypeRessource(Base):
-    __tablename__ = "typeRessource"
+class NameResource(Base):
+    __tablename__ = "name_resource"
 
-    id_type = Column(Integer, primary_key=True)
+    id_name_res = Column(Integer, primary_key=True)
     name = Column(String)
 

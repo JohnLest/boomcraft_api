@@ -20,7 +20,7 @@ class UserService:
         return result
 
     def post_new_user(self, data: PostUserModel):
-        user = User(id_user = int(datetime.now().timestamp()), pseudo = data.pseudo, mail = data.mail, password = data.password)
+        user = User(id_user = int(datetime.now().timestamp()*1000), pseudo = data.pseudo, mail = data.mail, password = data.password)
         result = self.repo.insert(user)
         return result
 

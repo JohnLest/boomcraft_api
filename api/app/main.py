@@ -1,5 +1,5 @@
 from app.routers.userRouter import route as r_usr
-from app.routers.ressourceRouter import route as r_ress
+from app.routers.resourceRouter import route as r_ress
 from app.routers.helloRouter import route as r_hello
 
 
