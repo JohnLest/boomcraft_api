@@ -1,5 +1,6 @@
 from tools.genericRepository.genericRepo import GenericRepo
 
-class TypeResourceRepoRepo(GenericRepo):
+
+class NameResourceRepo(GenericRepo):
     def __init__(self, session, table):
         GenericRepo.__init__(self, session, table)
