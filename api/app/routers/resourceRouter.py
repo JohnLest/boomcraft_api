@@ -1,7 +1,8 @@
-from typing import List
 from fastapi import APIRouter, HTTPException
 from model.resourceModel import ResourceModel
+from typing import Optional
 from model.userResourceModel import UserResourceModel
+from model.userModel import GetUserModel
 from bll.services.resourceService import ResourceService
 from bll.services.userService import UserService
 from database.database import session
@@ -15,11 +16,19 @@ resource_service = ResourceService(session)
 user_service = UserService(session)
 
 
-@route.get("/get_resources_by_user_id/{user_id}", response_model=UserResourceModel, status_code=200)
-async def get_resources(user_id: int):
-    resource_list = resource_service.get_resources_by_user_id(user_id)
-    user = user_service.get_user_by_id(user_id)
-    u_r_model = UserResourceModel(pseudo = user, resource = resource_list)
+@route.get("/get_user_resources", response_model=UserResourceModel, status_code=200)
+async def get_resources(id_user: Optional[int] = None, mail_user:Optional[str] = None):
+    user: GetUserModel = None
+    if mail_user is None and id_user is None:
+        raise HTTPException(status_code=400, detail="Bad Request : No parameter")
+    elif id_user is not None:
+        user = user_service.get_user_by_id(id_user)
+    elif mail_user is not None:
+        user = user_service.get_user_by_mail(mail_user)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Not Found : no user found")
+    resource_list = resource_service.get_resources_by_user_id(user.id_user)
+    u_r_model = UserResourceModel(pseudo=user, resource=resource_list)
     return u_r_model
 
 
