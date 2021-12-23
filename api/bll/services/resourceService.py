@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from dal.repository.resourceRepo import ResourceRepo
 from dal.repository.v_resourceRepo import VResourceRepo
 from dal.repository.typeResourceRepo import TypeResourceRepo
@@ -6,7 +7,7 @@ from database.resource import Resource
 from database.v_resource import VResource
 from database.type_resource import TypeResource
 from database.name_resource import NameResource
-
+from model.resourceModel import UpdateResourceModel
 
 class ResourceService:
     def __init__(self, session):
@@ -23,7 +24,22 @@ class ResourceService:
         result = self.v_resource_repo.get_all_filter(VResource.id_user == user_id)
         return result
 
+    def ger_resource_by_id(self, id_res):
+        result = self.resource_repo.get_by_id(id_res)
+        return result
+
     def get_code_resource(self):
         type_resource = self.type_resource_repo.get_all()
         name_resource = self.name_resource_repo.get_all()
         return type_resource, name_resource
+
+    def update_resource_by_user(self, data: UpdateResourceModel):
+        up = self.resource_repo.update(update={Resource.quantity: data.quantity},
+                                       filter=and_(Resource.id_user == data.id_user,
+                                                   Resource.id_name_res == data.id_name_res))
+        return next(iter(up), None)
+
+    def update_resource_by_id(self, id_res, new_quantity):
+        up = self.resource_repo.update(update={Resource.quantity: new_quantity},
+                                       filter=Resource.id_res == id_res )
+        return next(iter(up), None)

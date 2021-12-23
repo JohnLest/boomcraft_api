@@ -108,11 +108,10 @@ class GenericRepo:
         if filter is None:
             up = self.session.query(self.table).all()
         else:
-            up = self.session.query(self.table).filter(filter)
+            up = self.session.query(self.table).filter(filter).all()
            
         for row in up:
             for key in update.keys():
-                print(update[key])
                 setattr(row, key.key, update[key])
             self.session.add(row)
         if commit:
