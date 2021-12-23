@@ -12,7 +12,14 @@ route = APIRouter(
 user_service = UserService(session)
 
 
-@route.get("/get_user/", response_model=GetUserModel, status_code=200)
+@route.get("/connect", response_model=GetUserModel, status_code=200)
+async def connect(mail_user: str, password: str):
+    user = user_service.connect(mail_user, password)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Not Found : No user found. Mail or password incorrect")
+    return user
+
+@route.get("/get_user", response_model=GetUserModel, status_code=200)
 async def get_user(mail_user: Optional[str] = None, id_user: Optional[int] = None):
     user: GetUserModel = None
     if mail_user is None and id_user is None:

@@ -1,7 +1,9 @@
+from sqlalchemy import and_
+from datetime import datetime
 from dal.repository.userRepo import UserRepo
 from database.user import User
 from model.userModel import PostUserModel
-from datetime import datetime
+
 
 class UserService:
     def __init__(self, session):
@@ -18,6 +20,11 @@ class UserService:
     def get_user_by_mail(self, mail):
         result = self.repo.get_first(User.mail == mail)
         return result
+
+    def connect(self, mail, psswd):
+        user = self.repo.get_first(and_(User.mail == mail,
+                                        User.password == psswd))
+        return user
 
     def post_new_user(self, data: PostUserModel):
         user = User(id_user = int(datetime.now().timestamp()*1000), pseudo = data.pseudo, mail = data.mail, password = data.password)
