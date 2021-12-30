@@ -8,5 +8,5 @@ class FriendOf(Base):
     __tablename__ = "friend_of"
 
     id_friend_of = Column(Integer, primary_key=True)
-    id_user_asc = Column(BIGINT)
-    id_user_des = Column(BIGINT)
+    friend_asc = Column("id_user_asc", BIGINT)
+    friend_des = Column("id_user_des", BIGINT)

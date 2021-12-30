@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from typing import Optional
-from model.userModel import GetUserModel, PostUserModel
+from model.userModel import GetUserModel, PostUserModel, PostFriendModel, GetFriendModel
 from bll.services.userService import UserService
 from database.database import session
 
@@ -19,6 +19,7 @@ async def connect(mail_user: str, password: str):
         raise HTTPException(status_code=404, detail="Not Found : No user found. Mail or password incorrect")
     return user
 
+
 @route.get("/get_user", response_model=GetUserModel, status_code=200)
 async def get_user(mail_user: Optional[str] = None, id_user: Optional[int] = None):
     user: GetUserModel = None
@@ -33,8 +34,33 @@ async def get_user(mail_user: Optional[str] = None, id_user: Optional[int] = Non
     return user
 
 
+@route.get("/get_friend/{id_user}", response_model=GetFriendModel, status_code=200)
+async def get_friend(id_user: int):
+    friend_asc: GetUserModel = user_service.get_user_by_id(id_user)
+    if friend_asc is None:
+        raise HTTPException(status_code=404, detail="Not Found : no user found")
+    friend: PostFriendModel = user_service.get_friend_list(id_user)
+    if friend_asc is None:
+        raise HTTPException(status_code=404, detail="Not Found : no friend found")
+    friend_pseudo_lst = []
+    for elem in friend:
+        if elem.friend_des == id_user:
+            user: GetUserModel = user_service.get_user_by_id(elem.friend_asc)
+            friend_pseudo_lst.append(user.pseudo)
+        else:
+            user: GetUserModel = user_service.get_user_by_id(elem.friend_des)
+            friend_pseudo_lst.append(user.pseudo)
+    friend_model = GetFriendModel(friend_asc= friend_asc.pseudo, friend_des= friend_pseudo_lst)
+    return friend_model
+
+
 @route.post("/post_new_user", response_model=GetUserModel, status_code=200)
 async def post_new_user(user: PostUserModel):
     new_user = user_service.post_new_user(user)
     return new_user
 
+
+@route.post("/post_new_friend", status_code=200)
+async def post_new_friend(friend: PostFriendModel):
+    new_friend = user_service.post_new_friend(friend)
+    return new_friend
