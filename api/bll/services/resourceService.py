@@ -11,6 +11,7 @@ from database.name_resource import NameResource
 from database.v_weight_resource import VWeightResource
 from model.resourceModel import UpdateResourceModel
 
+
 class ResourceService:
     def __init__(self, session):
         self.resource_repo = ResourceRepo(session, Resource)
@@ -27,7 +28,7 @@ class ResourceService:
         result = self.v_resource_repo.get_all_filter(VResource.id_user == user_id)
         return result
 
-    def ger_resource_by_id(self, id_res):
+    def get_resource_by_id(self, id_res):
         result = self.resource_repo.get_by_id(id_res)
         return result
 
@@ -48,5 +49,5 @@ class ResourceService:
 
     def update_resource_by_id(self, id_res, new_quantity):
         up = self.resource_repo.update(update={Resource.quantity: new_quantity},
-                                       filter=Resource.id_res == id_res )
+                                       filter=Resource.id_res == id_res)
         return next(iter(up), None)

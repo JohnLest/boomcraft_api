@@ -14,7 +14,7 @@ user_service = UserService(session)
 
 @route.get("/connect", response_model=GetUserModel, status_code=200)
 async def connect(mail_user: str, password: str):
-    user = user_service.connect(mail_user, password)
+    user = user_service.connect(mail_user.lower(), password)
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found : No user found. Mail or password incorrect")
     return user
@@ -28,7 +28,7 @@ async def get_user(mail_user: Optional[str] = None, id_user: Optional[int] = Non
     elif id_user is not None:
         user = user_service.get_user_by_id(id_user)
     elif mail_user is not None:
-        user = user_service.get_user_by_mail(mail_user)
+        user = user_service.get_user_by_mail(mail_user.lower())
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found : no user found")
     return user
@@ -57,10 +57,21 @@ async def get_friend(id_user: int):
 @route.post("/post_new_user", response_model=GetUserModel, status_code=200)
 async def post_new_user(user: PostUserModel):
     new_user = user_service.post_new_user(user)
+    if new_user == "error":
+        if user_service.mail_is_exist(user.mail.lower()):
+            raise HTTPException(status_code=500, detail="Internal Server Error : mail is already used")
+        elif user_service.pseudo_is_exist(user.pseudo.lower()):
+            raise HTTPException(status_code=500, detail="Internal Server Error : pseudo is already used")
+        else:
+            raise HTTPException(status_code=500, detail="Internal Server Error : Unknown Error")
     return new_user
 
 
 @route.post("/post_new_friend", status_code=200)
 async def post_new_friend(friend: PostFriendModel):
+    if user_service.already_friend(friend.friend_asc, friend.friend_des):
+        raise HTTPException(status_code=500, detail="Internal Server Error : already friend")
     new_friend = user_service.post_new_friend(friend)
+    if new_friend == "error":
+        raise HTTPException(status_code=404, detail="Not found: Error with users ID")
     return new_friend

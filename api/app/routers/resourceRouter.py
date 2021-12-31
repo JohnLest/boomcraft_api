@@ -19,14 +19,14 @@ user_service = UserService(session)
 
 
 @route.get("/get_resources_by_user", response_model=UserResourceModel, status_code=200)
-async def get_resources(id_user: Optional[int] = None, mail_user:Optional[str] = None):
+async def get_resources(id_user: Optional[int] = None, mail_user: Optional[str] = None):
     user: GetUserModel = None
     if mail_user is None and id_user is None:
         raise HTTPException(status_code=400, detail="Bad Request : No parameter")
     elif id_user is not None:
         user = user_service.get_user_by_id(id_user)
     elif mail_user is not None:
-        user = user_service.get_user_by_mail(mail_user)
+        user = user_service.get_user_by_mail(mail_user.lower())
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found : no user found")
     resource_list = resource_service.get_resources_by_user_id(user.id_user)
@@ -36,7 +36,7 @@ async def get_resources(id_user: Optional[int] = None, mail_user:Optional[str] =
 
 @route.get("/get_resource_by_id/{id_res}", response_model=ResourceModel, status_code=200)
 async def get_resource_by_id(id_res: int):
-    resource = resource_service.ger_resource_by_id(id_res)
+    resource = resource_service.get_resource_by_id(id_res)
     if resource is None:
         raise HTTPException(status_code=404, detail="Not Found : no resource found")
     return resource
@@ -56,10 +56,11 @@ async def get_weight_resource():
 
 @route.put("/update_resource_by_user", response_model=ResourceModel, status_code=200)
 async def update_resources(resource: UpdateResourceModel):
-    update = resource_service.update_resource(resource)
+    update = resource_service.update_resource_by_user(resource)
     if update is None:
         raise HTTPException(status_code=404, detail="Not Found : no resource found with match")
     return update
+
 
 @route.put("/update_resource_by_id", response_model=ResourceModel, status_code=200)
 async def update_resources(id_res: int, new_quantity: int):
