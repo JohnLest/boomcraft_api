@@ -3,10 +3,12 @@ from dal.repository.resourceRepo import ResourceRepo
 from dal.repository.v_resourceRepo import VResourceRepo
 from dal.repository.typeResourceRepo import TypeResourceRepo
 from dal.repository.nameResourceRepo import NameResourceRepo
+from dal.repository.v_weight_resourceRepo import VWeightResourceRepo
 from database.resource import Resource
 from database.v_resource import VResource
 from database.type_resource import TypeResource
 from database.name_resource import NameResource
+from database.v_weight_resource import VWeightResource
 from model.resourceModel import UpdateResourceModel
 
 class ResourceService:
@@ -15,6 +17,7 @@ class ResourceService:
         self.v_resource_repo = VResourceRepo(session, VResource)
         self.type_resource_repo = TypeResourceRepo(session, TypeResource)
         self.name_resource_repo = NameResourceRepo(session, NameResource)
+        self.weight_res_repo = VWeightResourceRepo(session, VWeightResource)
 
     def get_all_resource(self):
         result = self.resource_repo.get_all()
@@ -32,6 +35,10 @@ class ResourceService:
         type_resource = self.type_resource_repo.get_all()
         name_resource = self.name_resource_repo.get_all()
         return type_resource, name_resource
+
+    def get_weight_resource(self):
+        weight_res = self.weight_res_repo.get_all()
+        return weight_res
 
     def update_resource_by_user(self, data: UpdateResourceModel):
         up = self.resource_repo.update(update={Resource.quantity: data.quantity},

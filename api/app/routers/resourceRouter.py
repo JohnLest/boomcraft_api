@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import Optional
-from model.resourceModel import ResourceModel, UpdateResourceModel
+from typing import List
+from model.resourceModel import ResourceModel, UpdateResourceModel, GetWeightResourceModel
 from model.userResourceModel import UserResourceModel
 from model.userModel import GetUserModel
 from model.codeResourceModel import CodeModel
@@ -45,6 +46,12 @@ async def get_resource_by_id(id_res: int):
 async def get_code_resource():
     type_res, name_res = resource_service.get_code_resource()
     return CodeModel(type_resource=type_res, name_resource=name_res)
+
+
+@route.get("/get_weight_resource", response_model=List[GetWeightResourceModel], status_code=200)
+async def get_weight_resource():
+    weight_res = resource_service.get_weight_resource()
+    return weight_res
 
 
 @route.put("/update_resource_by_user", response_model=ResourceModel, status_code=200)

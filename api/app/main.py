@@ -9,7 +9,7 @@ from bll.services.goldService import *
 def loop_gold_rate():
     gold = GoldService()
     while True:
-        gold.update_gold_rate()
+        # gold.update_gold_rate()
         time.sleep(3600)
 
 
