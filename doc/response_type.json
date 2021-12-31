@@ -1,0 +1,26 @@
+{
+    "get_user": {
+        "pseudo": "string",
+        "mailAddress": "string"
+    },
+    "get_resources": {
+        "pseudo": "string",
+        "resources": [
+            {
+                "type_resource": "string",
+                "name_resource": "string",
+                "quantity_resource": 0
+            }
+        ]
+    },
+    "update_resources": {
+        "pseudo": "string",
+        "type_resource": "string",
+        "name_resource": "string",
+        "quantity_resource": 0
+    },
+    "post_new_user": {
+        "pseudo": "string",
+        "mailAddress": "string"
+    }
+}
