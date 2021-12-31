@@ -29,3 +29,22 @@ class UpdateResourceModel(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GetWeightResourceModel(BaseModel):
+    id_weight_res: int
+    id_name_res: int
+    name: str
+    weight: int
+
+    class Config:
+        orm_mode = True
+
+
+class UpdateWeightResourceModel(BaseModel):
+    id_weight_res: int
+    id_name_res: int
+    weight: int
+
+    class Config:
+        orm_mode = True
