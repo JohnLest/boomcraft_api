@@ -14,11 +14,12 @@ from model.resourceModel import UpdateResourceModel
 
 class ResourceService:
     def __init__(self, session):
-        self.resource_repo = ResourceRepo(session, Resource)
-        self.v_resource_repo = VResourceRepo(session, VResource)
-        self.type_resource_repo = TypeResourceRepo(session, TypeResource)
-        self.name_resource_repo = NameResourceRepo(session, NameResource)
-        self.weight_res_repo = VWeightResourceRepo(session, VWeightResource)
+        self.session = session
+        self.resource_repo = ResourceRepo(self.session, Resource)
+        self.v_resource_repo = VResourceRepo(self.session, VResource)
+        self.type_resource_repo = TypeResourceRepo(self.session, TypeResource)
+        self.name_resource_repo = NameResourceRepo(self.session, NameResource)
+        self.weight_res_repo = VWeightResourceRepo(self.session, VWeightResource)
 
     def get_all_resource(self):
         result = self.resource_repo.get_all()
@@ -42,12 +43,20 @@ class ResourceService:
         return weight_res
 
     def update_resource_by_user(self, data: UpdateResourceModel):
-        up = self.resource_repo.update(update={Resource.quantity: data.quantity},
-                                       filter=and_(Resource.id_user == data.id_user,
-                                                   Resource.id_name_res == data.id_name_res))
+        try:
+            up = self.resource_repo.update(update={Resource.quantity: data.quantity},
+                                           filter=and_(Resource.id_user == data.id_user,
+                                                       Resource.id_name_res == data.id_name_res))
+        except:
+            self.session.rollback()
+            return "error"
         return next(iter(up), None)
 
     def update_resource_by_id(self, id_res, new_quantity):
-        up = self.resource_repo.update(update={Resource.quantity: new_quantity},
-                                       filter=Resource.id_res == id_res)
+        try:
+            up = self.resource_repo.update(update={Resource.quantity: new_quantity},
+                                           filter=Resource.id_res == id_res)
+        except:
+            self.session.rollback()
+            return "error"
         return next(iter(up), None)

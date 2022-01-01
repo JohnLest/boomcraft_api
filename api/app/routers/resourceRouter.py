@@ -57,6 +57,8 @@ async def get_weight_resource():
 @route.put("/update_resource_by_user", response_model=ResourceModel, status_code=200)
 async def update_resources(resource: UpdateResourceModel):
     update = resource_service.update_resource_by_user(resource)
+    if update == "error":
+        raise HTTPException(status_code=400, detail="Bad request: Error in the parameters")
     if update is None:
         raise HTTPException(status_code=404, detail="Not Found : no resource found with match")
     return update
@@ -65,6 +67,8 @@ async def update_resources(resource: UpdateResourceModel):
 @route.put("/update_resource_by_id", response_model=ResourceModel, status_code=200)
 async def update_resources(id_res: int, new_quantity: int):
     update = resource_service.update_resource_by_id(id_res, new_quantity)
+    if update == "error":
+        raise HTTPException(status_code=400, detail="Bad request: Error in the parameters")
     if update is None:
         raise HTTPException(status_code=404, detail="Not Found : no resource found")
     return update
