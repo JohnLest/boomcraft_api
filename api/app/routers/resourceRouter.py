@@ -14,8 +14,8 @@ route = APIRouter(
     tags=["Resource Router"]
     )
 
-resource_service = ResourceService(session)
-user_service = UserService(session)
+resource_service = ResourceService()
+user_service = UserService()
 
 
 @route.get("/get_resources_by_user", response_model=UserResourceModel, status_code=200)

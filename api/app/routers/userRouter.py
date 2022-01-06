@@ -9,7 +9,7 @@ route = APIRouter(
     tags=["User Router"]
     )
 
-user_service = UserService(session)
+user_service = UserService()
 
 
 @route.get("/connect", response_model=GetUserModel, status_code=200)

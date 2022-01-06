@@ -15,6 +15,7 @@ class GoldService:
         self.access_key = '0y3ocp4lz4ptzdz9xgpd73p7fw27q3n1m43j66mc6g58qcgri8v98oh0sk28'
 
     def update_gold_rate(self):
+        self.weight_res_repo.session = session
         resp = requests.get(
             'https://metals-api.com/api/'+self.endpoint+'?access_key='+self.access_key)
         resp_json = resp.json()
