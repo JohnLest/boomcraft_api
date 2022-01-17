@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy import and_
 from datetime import datetime
 from database.database import session
@@ -6,6 +7,7 @@ from dal.repository.friendOfRepo import FriendOfRepo
 from database.user import User
 from database.friend_of import FriendOf
 from model.userModel import PostUserModel, PostFriendModel
+from model.facebookModel import FacebookModel
 
 
 class UserService:
@@ -83,6 +85,7 @@ class UserService:
             return "error"
         return user
 
+
     def get_friend_list(self, id):
         self.friend_repo.session = session
         try:
@@ -99,6 +102,19 @@ class UserService:
                     pseudo=data.pseudo.lower(),
                     mail=data.mail.lower(),
                     password=data.password)
+        try:
+            result = self.user_repo.insert(user)
+        except:
+            self.session.rollback()
+            return "error"
+        return result
+
+    def post_new_fb_user(self, data: FacebookModel):
+        self.user_repo.session = session
+        user = User(id_user=int(data.id),
+                    pseudo=f"{data.name}#{str(data.id)[10:]}",
+                    mail=data.email,
+                    password=str(uuid.uuid4()))
         try:
             result = self.user_repo.insert(user)
         except:
