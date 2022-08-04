@@ -1,0 +1,45 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: boomcraft_api
+      MYSQL_USER: boomcraft
+      MYSQL_PASSWORD: ***
+      MYSQL_ROOT_PASSWORD: ***
+    networks:
+      - netdb
+
+  
+  myapp-pma:
+    container_name: myapp-pma
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      
+      
+      PMA_USER: root
+      PMA_PASSWORD: ***
+    
+    
+    ports:
+      - "8081:80"
+    depends_on:
+      - mariadb
+    networks:
+      - netdb
+    
+volumes:
+  mariadb-data:
+networks:
+  netdb:
+    
+
+  

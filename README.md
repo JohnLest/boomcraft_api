@@ -16,3 +16,19 @@ This layer contains the data object with [`pydantic`](https://pydantic-docs.help
 
 ## Tools
 This is a package that contains different gerneric tools. This is the same as [tools_python](https://github.com/JohnLest/tools_python)
+
+## To install with docker and docker-compose
+
+### MariaDB
+Mariadb is installed with the docker-compose.yml 
+When you are in the folder with the docker-compose.yml file, insert this command in you shell : 
+`docker-compose -d `
+
+### Boomcraft API 
+The boomcraft api is installed with the Dockerfile 
+ First build the image with this command : 
+ `docker build -t boomcraft_api_image .`
+ Second, start the container with this command : 
+ `docker run -d --name boomcraft_api -p 40000:40000 boomcraft_api_image`
+
+ for more information go to the web site : https://fastapi.tiangolo.com/deployment/docker/
