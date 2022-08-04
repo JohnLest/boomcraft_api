@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from typing import Optional
 from model.userModel import GetUserModel, PostUserModel, PostFriendModel, GetFriendModel
+from model.facebookModel import FacebookModel
 from bll.services.userService import UserService
-from database.database import session
+
 
 route = APIRouter(
     prefix="/user",
@@ -18,6 +19,14 @@ async def connect(mail_user: str, password: str):
     if user is None:
         raise HTTPException(status_code=404, detail="Not Found : No user found. Mail or password incorrect")
     return user
+
+
+@route.post("/facebook_authentication", response_model=GetUserModel, status_code=200)
+async def connect_with_facebook(facebook: FacebookModel):
+    fb_user = user_service.get_user_by_id(int(facebook.id))
+    if fb_user is None:
+        fb_user = user_service.post_new_fb_user(facebook)
+    return fb_user
 
 
 @route.get("/get_user", response_model=GetUserModel, status_code=200)

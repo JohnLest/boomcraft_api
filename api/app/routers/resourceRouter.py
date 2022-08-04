@@ -7,7 +7,6 @@ from model.userModel import GetUserModel
 from model.codeResourceModel import CodeModel
 from bll.services.resourceService import ResourceService
 from bll.services.userService import UserService
-from database.database import session
 
 route = APIRouter(
     prefix="/resource",
