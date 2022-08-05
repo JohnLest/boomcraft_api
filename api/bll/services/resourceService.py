@@ -10,7 +10,7 @@ from database.v_resource import VResource
 from database.type_resource import TypeResource
 from database.name_resource import NameResource
 from database.v_weight_resource import VWeightResource
-from model.resourceModel import UpdateResourceModel
+from model.resourceModel import UpdateResourceModel, ResourceModel
 
 
 class ResourceService:
@@ -88,8 +88,14 @@ class ResourceService:
             self.resource_repo.session.rollback()
             self.resource_repo.session.close()
             return "error"
+        resource = next(iter(up), None)
+        _return = ResourceModel(id_res=resource.id_res,
+                                id_type_res=resource.id_type_res,
+                                id_name_res=resource.id_name_res,
+                                id_user=resource.id_user,
+                                quantity=resource.quantity)
         self.resource_repo.session.close()
-        return next(iter(up), None)
+        return _return
 
     def update_resource_by_id(self, id_res, new_quantity):
         self.resource_repo.session = Session()
@@ -100,5 +106,7 @@ class ResourceService:
             self.resource_repo.session.rollback()
             self.resource_repo.session.close()
             return "error"
+        _return = next(iter(up), None)
+        _return.id_user
         self.resource_repo.session.close()
-        return next(iter(up), None)
+        return _return
